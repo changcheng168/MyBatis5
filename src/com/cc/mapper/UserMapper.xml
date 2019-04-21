@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cc.mapper.UserMapper">
+    <select id="findUserWithOrders" parameterType="integer" resultMap="com.cc.mapper.UserMapper.UserWithOrdersResult">
+        <!--一对多-->
+        select u.*,o.id as orders_id,o.number
+        from tb_user u,tb_orders o
+        where u.id=o.user_id
+        and u.id=#{id}
+    </select>
+    <resultMap id="UserWithOrdersResult" type="User">
+        <id property="username" column="username"/>
+        <id property="address" column="address"/>
+        <!--映射-->
+        <collection property="ordersList" ofType="Orders">
+            <id property="id" column="id"/>
+           <result property="number" column="number"/>
+</collection>
+    </resultMap>
+</mapper>
